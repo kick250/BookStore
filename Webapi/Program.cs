@@ -1,3 +1,5 @@
+using Microsoft.EntityFrameworkCore;
+using Repository;
 using Services;
 
 namespace Webapi;
@@ -17,6 +19,11 @@ public class Program
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
         builder.Services.AddEndpointsApiExplorer();
         builder.Services.AddSwaggerGen();
+
+        builder.Services.AddDbContext<BookStoreContext>(contextBuilder =>
+        {
+            contextBuilder.UseSqlServer(builder.Configuration.GetConnectionString("BookStoreDb"));
+        });
 
         var app = builder.Build();
 
