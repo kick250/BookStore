@@ -1,3 +1,5 @@
+using Services;
+
 namespace Webapi;
 
 public class Program
@@ -7,6 +9,9 @@ public class Program
         var builder = WebApplication.CreateBuilder(args);
 
         // Add services to the container.
+        builder.Services.AddScoped<UsersService>();
+        builder.Services.AddScoped<AuthorsService>();
+        builder.Services.AddScoped<BooksService>();
 
         builder.Services.AddControllers();
         // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
