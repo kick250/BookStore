@@ -41,6 +41,12 @@ public class AuthorsService
         Context.SaveChanges();
     }
 
+    public void Update(Author author)
+    {
+        Context.Authors.Update(author);
+        Context.SaveChanges();
+    }
+
     #region private 
 
     private bool EmailInUse(string email)

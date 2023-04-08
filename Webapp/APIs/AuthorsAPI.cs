@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
 
 namespace Webapp.APIs;
@@ -46,6 +47,14 @@ public class AuthorsAPI : IAPI
     public void Create(Author author)
     {
         var response = Post("/Authors", author).Result;
+
+        if (!response.IsSuccessStatusCode)
+            throw new APIErrorException(response);
+    }
+
+    public void Update(Author author)
+    {
+        var response = Put($"/Authors/{author.Id}", author).Result;
 
         if (!response.IsSuccessStatusCode)
             throw new APIErrorException(response);

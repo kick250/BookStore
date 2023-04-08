@@ -51,9 +51,13 @@ public class AuthorsController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, [FromBody] string value)
+    public IActionResult Update([FromBody] Author author)
     {
-        throw new NotImplementedException();
+        if (!ModelState.IsValid)
+            return BadRequest(author);
+
+        AuthorsService.Update(author);
+        return Created("", author);
     }
 
     [HttpDelete("{id}")]

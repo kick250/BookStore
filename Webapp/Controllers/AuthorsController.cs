@@ -35,7 +35,7 @@ public class AuthorsController : Controller
     public ActionResult Create(Author author)
     {
         if (!ModelState.IsValid)
-            return View("New", author);
+            return View(nameof(New), author);
 
         try
         {
@@ -46,25 +46,32 @@ public class AuthorsController : Controller
         catch (Exception ex)
         {
             ViewBag.Error = ex.Message;
-            return View("New", author);
+            return View(nameof(New), author);
         }
     }
 
     public ActionResult Edit(int id)
     {
-        return View();
+        Author author = AuthorsAPI.GetById(id);
+        return View(author);
     }
 
     [HttpPost]
-    public ActionResult Edit(int id, IFormCollection collection)
+    public ActionResult Update(Author author)
     {
+        if (!ModelState.IsValid)
+            return View(nameof(Edit), author);
+
         try
         {
-            return RedirectToAction(nameof(Index));
+            AuthorsAPI.Update(author);
+
+            return RedirectToAction(nameof(Details), new { Id = author.Id });
         }
-        catch
+        catch (Exception ex)
         {
-            return View();
+            ViewBag.Error = ex.Message;
+            return View(nameof(Edit), author);
         }
     }
 
