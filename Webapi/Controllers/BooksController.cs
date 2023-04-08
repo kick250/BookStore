@@ -1,4 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Entities;
+using Services;
 
 namespace Webapi.Controllers;
 
@@ -6,10 +8,18 @@ namespace Webapi.Controllers;
 [ApiController]
 public class BooksController : ControllerBase
 {
+    private BooksService BooksService { get; set; }
+
+    public BooksController(BooksService booksService)
+    {
+        BooksService = booksService;
+    }
+
     [HttpGet]
     public IActionResult Index()
     {
-        throw new NotImplementedException();
+        IEnumerable<Book> books = BooksService.GetAll();
+        return Ok(books);
     }
 
     [HttpGet("{id}")]

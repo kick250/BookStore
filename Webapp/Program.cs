@@ -12,6 +12,7 @@ public class Program
         builder.Services.AddControllersWithViews();
 
         builder.Services.AddScoped<AuthorsAPI>();
+        builder.Services.AddScoped<BooksAPI>();
 
         var app = builder.Build();
 
