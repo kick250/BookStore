@@ -25,4 +25,21 @@ public class AuthorsAPI : IAPI
 
         return result;
     }
+
+    public Author GetById(int id)
+    {
+        var response = Get($"/Authors/{id}").Result;
+
+        if (!response.IsSuccessStatusCode)
+            throw new APIErrorException(response);
+
+        string jsonResult = response.Content.ReadAsStringAsync().Result;
+
+        Author? result = JsonConvert.DeserializeObject<Author>(jsonResult);
+
+        if (result == null)
+            throw new Exception("Ocorreu um erro desconhecido.");
+
+        return result;
+    }
 }

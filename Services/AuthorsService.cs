@@ -1,4 +1,5 @@
 ﻿using Entities;
+using Infrastructure.Exceptions;
 using Microsoft.EntityFrameworkCore;
 using Repository;
 
@@ -19,5 +20,15 @@ public class AuthorsService
     public IEnumerable<Author> GetAll()
     {
         return Authors;
+    }
+
+    public Author GetById(int id)
+    {
+        Author? author = Authors.FirstOrDefault(author => author.Id == id);
+
+        if (author == null)
+            throw new RecordNotFound();
+
+        return author;
     }
 }

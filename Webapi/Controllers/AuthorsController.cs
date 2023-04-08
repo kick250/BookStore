@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Mvc;
 using Services;
 
 namespace Webapi.Controllers;
@@ -23,7 +24,12 @@ public class AuthorsController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        throw new NotImplementedException();
+        try { 
+            return Ok(AuthorsService.GetById(id));
+        } catch (RecordNotFound ex)
+        {
+            return NotFound(new { Error = ex.Message });
+        }
     }
 
     [HttpPost]

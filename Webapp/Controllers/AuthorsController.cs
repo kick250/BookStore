@@ -22,7 +22,8 @@ public class AuthorsController : Controller
 
     public ActionResult Details(int id)
     {
-        return View();
+        Author author = AuthorsAPI.GetById(id);
+        return View(author);
     }
 
     public ActionResult Create()
