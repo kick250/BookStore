@@ -1,7 +1,7 @@
 ﻿using Entities;
 using Infrastructure.Exceptions;
-using Microsoft.AspNetCore.Authentication;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Bson;
 
 namespace Webapp.APIs;
 
@@ -55,6 +55,14 @@ public class AuthorsAPI : IAPI
     public void Update(Author author)
     {
         var response = Put($"/Authors/{author.Id}", author).Result;
+
+        if (!response.IsSuccessStatusCode)
+            throw new APIErrorException(response);
+    }
+
+    public void DeleteById(int id)
+    {
+        var response = Delete($"/Authors/{id}").Result;
 
         if (!response.IsSuccessStatusCode)
             throw new APIErrorException(response);

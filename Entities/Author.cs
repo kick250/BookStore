@@ -14,4 +14,11 @@ public class Author
     [Required(ErrorMessage = "A data de aniversário do autor é necessárioa")]
     public DateTime? Birthdate { get; set; }
     public List<Book>? Books { get; set; }
+
+    public bool HasSomeBook()
+    {
+        if (Books == null) return false;
+
+        return Books.Count > 0;
+    }
 }

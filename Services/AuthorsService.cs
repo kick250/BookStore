@@ -47,6 +47,17 @@ public class AuthorsService
         Context.SaveChanges();
     }
 
+    public void DeleteById(int id)
+    {
+        Author author = GetById(id);
+
+        if (author.HasSomeBook())
+            throw new AuthorWithBooksException();
+
+        Context.Authors.Remove(author);
+        Context.SaveChanges();
+    }
+
     #region private 
 
     private bool EmailInUse(string email)

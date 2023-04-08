@@ -77,19 +77,23 @@ public class AuthorsController : Controller
 
     public ActionResult Delete(int id)
     {
-        return View();
+        Author author = AuthorsAPI.GetById(id);
+        return View(author);
     }
 
     [HttpPost]
-    public ActionResult Delete(int id, IFormCollection collection)
+    public ActionResult Destroy(int id)
     {
         try
         {
+            AuthorsAPI.DeleteById(id);
+
             return RedirectToAction(nameof(Index));
         }
-        catch
+        catch (Exception ex)
         {
-            return View();
+            ViewBag.Error = ex.Message;
+            return RedirectToAction(nameof(Delete));
         }
     }
 }

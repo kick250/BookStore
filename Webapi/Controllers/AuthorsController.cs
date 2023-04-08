@@ -1,6 +1,5 @@
 ﻿using Entities;
 using Infrastructure.Exceptions;
-using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -63,6 +62,19 @@ public class AuthorsController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            AuthorsService.DeleteById(id);
+
+            return NoContent();
+        }
+        catch (AuthorWithBooksException ex)
+        {
+            return BadRequest(new { Error = ex.Message });
+        }
+        catch (RecordNotFound)
+        {
+            return NoContent();
+        }
     }
 }
