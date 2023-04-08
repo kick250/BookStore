@@ -31,4 +31,22 @@ public class AuthorsService
 
         return author;
     }
+
+    public void Create(Author author)
+    {
+        if (EmailInUse(author.Email ?? ""))
+            throw new EmailInUseException();
+
+        Context.Authors.Add(author);
+        Context.SaveChanges();
+    }
+
+    #region private 
+
+    private bool EmailInUse(string email)
+    {
+        return Context.Authors.Any(author => author.Email == email);
+    }
+
+    #endregion
 }

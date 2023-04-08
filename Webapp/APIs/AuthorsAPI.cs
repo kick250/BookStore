@@ -42,4 +42,12 @@ public class AuthorsAPI : IAPI
 
         return result;
     }
+
+    public void Create(Author author)
+    {
+        var response = Post("/Authors", author).Result;
+
+        if (!response.IsSuccessStatusCode)
+            throw new APIErrorException(response);
+    }
 }

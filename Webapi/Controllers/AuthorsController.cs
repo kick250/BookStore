@@ -1,4 +1,6 @@
-﻿using Infrastructure.Exceptions;
+﻿using Entities;
+using Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -33,9 +35,19 @@ public class AuthorsController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] string value)
+    public IActionResult Create([FromBody] Author author)
     {
-        throw new NotImplementedException();
+        if (!ModelState.IsValid)
+            return BadRequest(author);
+
+        try
+        {
+            AuthorsService.Create(author);
+            return Created("", author);
+        } catch (EmailInUseException ex)
+        {
+            return BadRequest(new { Error = ex.Message });
+        }
     }
 
     [HttpPut("{id}")]

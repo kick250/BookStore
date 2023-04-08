@@ -26,21 +26,27 @@ public class AuthorsController : Controller
         return View(author);
     }
 
-    public ActionResult Create()
+    public ActionResult New()
     {
         return View();
     }
 
     [HttpPost]
-    public ActionResult Create(IFormCollection collection)
+    public ActionResult Create(Author author)
     {
+        if (!ModelState.IsValid)
+            return View("New", author);
+
         try
         {
+            AuthorsAPI.Create(author);
+
             return RedirectToAction(nameof(Index));
         }
-        catch
+        catch (Exception ex)
         {
-            return View();
+            ViewBag.Error = ex.Message;
+            return View("New", author);
         }
     }
 
