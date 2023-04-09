@@ -40,3 +40,49 @@
     @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
     <a asp-action="Index">Back to List</a>
 </div>
+
+<div>
+    <h4>Livros desse autor</h4>
+    @if (Model.Books == null || Model.Books.Count == 0)
+    {
+        <span>Esse autor não possui livros cadastrados.</span>
+    } else
+    {
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Title
+                    </th>
+                    <th>
+                        ISBN
+                    </th>
+                    <th>
+                        ReleaseDate
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var item in Model.Books)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Title)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ISBN)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ReleaseDate)
+                        </td>
+                        <th>
+                            @Html.ActionLink("Ver", "Details", "Books", new { id = item.Id })
+                        </th>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    } 
+</div>
+
