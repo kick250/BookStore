@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace Webapp.Controllers;
 
 [Authorize]
-public class BooksController : Controller
+public class BooksController : AuthorizedController
 {
     private BooksAPI BooksAPI { get; set; }
     private AuthorsAPI AuthorsAPI { get; set; }
@@ -15,6 +15,12 @@ public class BooksController : Controller
     {
         BooksAPI = booksAPI;
         AuthorsAPI = authorsAPI;
+    }
+
+    protected override void SetAPIToken()
+    {
+        BooksAPI.AddToken(SessionToken);
+        AuthorsAPI.AddToken(SessionToken);
     }
 
     public ActionResult Index()

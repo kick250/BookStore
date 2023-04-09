@@ -20,7 +20,6 @@ public class Program
         builder.Services.AddScoped<UsersAPI>();
         builder.Services.AddScoped<AuthenticationAPI>();
 
-        //builder.Services.AddTransient<SessionHelper>(); 
         builder.Services.AddTransient<IUserStore<Account>, AccountRepository>();
         builder.Services.AddTransient<IRoleStore<AccountRole>, AccountRoleRepository>();
         builder.Services.AddTransient<IAccountManager, AccountManager>();

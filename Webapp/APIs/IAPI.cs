@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Net.Http.Headers;
 using System.Net.Mime;
 using System.Text;
 
@@ -12,6 +13,13 @@ public abstract class IAPI
     {
         BaseUrl = baseUrl ?? "";
         Client = new HttpClient();
+    }
+
+    public void AddToken(string? token)
+    {
+        if (token == null) return;
+
+        Client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", token);
     }
 
     protected Task<HttpResponseMessage> Get(string path)

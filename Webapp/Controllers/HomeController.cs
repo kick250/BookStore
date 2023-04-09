@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Webapp.Controllers;
 
 [Authorize]
-public class HomeController : Controller
+public class HomeController : AuthorizedController
 {
     public IActionResult Index()
     {

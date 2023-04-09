@@ -6,13 +6,18 @@ using Microsoft.AspNetCore.Authorization;
 namespace Webapp.Controllers;
 
 [Authorize]
-public class AuthorsController : Controller
+public class AuthorsController : AuthorizedController
 {
     private AuthorsAPI AuthorsAPI { get; set; }
 
     public AuthorsController(AuthorsAPI authorsAPI)
     {
         AuthorsAPI = authorsAPI;
+    }
+
+    protected override void SetAPIToken()
+    {
+        AuthorsAPI.AddToken(SessionToken);
     }
 
     public ActionResult Index()
