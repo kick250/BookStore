@@ -1,3 +1,7 @@
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Identity;
+using Webapp.Models;
+using Webapp.Repositories;
 using Webapp.APIs;
 
 namespace Webapp;
@@ -14,6 +18,25 @@ public class Program
         builder.Services.AddScoped<AuthorsAPI>();
         builder.Services.AddScoped<BooksAPI>();
         builder.Services.AddScoped<UsersAPI>();
+        builder.Services.AddScoped<AuthenticationAPI>();
+
+        //builder.Services.AddTransient<SessionHelper>(); 
+        builder.Services.AddTransient<IUserStore<Account>, AccountRepository>();
+        builder.Services.AddTransient<IRoleStore<AccountRole>, AccountRoleRepository>();
+        builder.Services.AddTransient<IAccountManager, AccountManager>();
+
+        builder.Services.AddIdentity<Account, AccountRole>()
+                        .AddDefaultTokenProviders();
+
+        builder.Services.ConfigureApplicationCookie(config =>
+        {
+            config.LoginPath = "/Users/Login";
+            config.AccessDeniedPath = "/Users/AccessDenied";
+            config.ExpireTimeSpan = TimeSpan.FromMinutes(30);
+            config.ReturnUrlParameter = CookieAuthenticationDefaults.ReturnUrlParameter;
+        });
+
+        builder.Services.AddSession();
 
         var app = builder.Build();
 
@@ -30,7 +53,10 @@ public class Program
 
         app.UseRouting();
 
+        app.UseAuthentication();
         app.UseAuthorization();
+
+        app.UseSession();
 
         app.MapControllerRoute(
             name: "default",

@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Webapp.APIs;
 using Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Webapp.Controllers;
 
+[Authorize]
 public class AuthorsController : Controller
 {
     private AuthorsAPI AuthorsAPI { get; set; }
