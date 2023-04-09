@@ -12,7 +12,12 @@ public class AuthorizedController : Controller
     {
         SessionHelper sessionHelper = new SessionHelper(context.HttpContext);
 
-        if (!sessionHelper.TokenIsPresent()) context.Result = Logout();
+        if (!sessionHelper.TokenIsPresent())
+        {
+            string path = context.HttpContext.Request.Path;
+            context.Result = Logout(path);
+            return;
+        }
 
         SessionToken = sessionHelper.GetToken();
 
@@ -24,13 +29,15 @@ public class AuthorizedController : Controller
 
     #region private
 
-    private RedirectToRouteResult Logout()
+    private RedirectToRouteResult Logout(string returnUrl)
     {
-        return new RedirectToRouteResult(new RouteValueDictionary(new
+        var routeParams = new RouteValueDictionary(new
         {
             controller = "Users",
-            action = "Logout"
-        }));
+            action = "Logout",
+            ReturnUrl = returnUrl
+        });
+        return new RedirectToRouteResult(routeParams);
     }
 
     #endregion

@@ -76,10 +76,13 @@ public class UsersController : Controller
 
     }
 
-    public ActionResult Logout()
+    public ActionResult Logout([FromQuery] string? returnUrl)
     {
         AccountManager.Logout();
 
-        return Redirect(nameof(Login));
+        if (returnUrl == null) 
+            returnUrl = "/";
+
+        return RedirectToAction(nameof(Login), new { ReturnUrl = returnUrl });
     }
 }
