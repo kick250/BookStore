@@ -1,83 +1,42 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Entities;
 using Microsoft.AspNetCore.Mvc;
+using Webapp.APIs;
 
-namespace Webapp.Controllers
+namespace Webapp.Controllers;
+
+public class UsersController : Controller
 {
-    public class UsersController : Controller
+    private UsersAPI UsersAPI;
+
+    public UsersController(UsersAPI usersAPI)
     {
-        // GET: UsersController
-        public ActionResult Index()
-        {
-            return View();
-        }
+        UsersAPI = usersAPI;
+    }
 
-        // GET: UsersController/Details/5
-        public ActionResult Details(int id)
-        {
-            return View();
-        }
+    //public ActionResult Details(int id)
+    //{
+    //    return View();
+    //}
 
-        // GET: UsersController/Create
-        public ActionResult Create()
-        {
-            return View();
-        }
+    public ActionResult New()
+    {
+        return View();
+    }
 
-        // POST: UsersController/Create
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
+    [HttpPost]
+    public ActionResult Create(User user)
+    {
+        if (!ModelState.IsValid) return View(nameof(New), user);
 
-        // GET: UsersController/Edit/5
-        public ActionResult Edit(int id)
+        try
         {
-            return View();
+            UsersAPI.Create(user);
+            return Redirect("/");
         }
-
-        // POST: UsersController/Edit/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, IFormCollection collection)
+        catch (Exception ex) 
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
-        }
-
-        // GET: UsersController/Delete/5
-        public ActionResult Delete(int id)
-        {
-            return View();
-        }
-
-        // POST: UsersController/Delete/5
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, IFormCollection collection)
-        {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            ViewBag.Error = ex.Message;
+            return View(nameof(New), user);
         }
     }
 }

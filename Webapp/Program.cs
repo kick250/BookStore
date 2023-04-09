@@ -13,6 +13,7 @@ public class Program
 
         builder.Services.AddScoped<AuthorsAPI>();
         builder.Services.AddScoped<BooksAPI>();
+        builder.Services.AddScoped<UsersAPI>();
 
         var app = builder.Build();
 

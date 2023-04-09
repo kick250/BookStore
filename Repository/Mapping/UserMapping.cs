@@ -11,6 +11,7 @@ public class UserMapping : IEntityTypeConfiguration<User>
         builder.HasKey(x => x.Id);
         builder.Property(x => x.Id);
 
+        builder.Property(x => x.Name).IsRequired().HasMaxLength(248);
         builder.Property(x => x.Username).IsRequired().HasMaxLength(448);
         builder.Property(x => x.Password).IsRequired().HasMaxLength(448);
     }
