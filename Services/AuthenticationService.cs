@@ -9,6 +9,7 @@ namespace Services;
 
 public class AuthenticationService
 {
+    public const string ISSUER = "book-store-token";
     private string TokenSecret { get; set; }
     private UsersService UsersService { get; set; }
 
@@ -40,7 +41,7 @@ public class AuthenticationService
         var securityToken = new SecurityTokenDescriptor()
         {
             Subject = new ClaimsIdentity(claims),
-            Issuer = "book-store-token",
+            Issuer = ISSUER,
             Expires = DateTime.UtcNow.AddMinutes(30),
             SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
         };

@@ -39,6 +39,8 @@ public class AuthorsService
 
     public void Create(Author author)
     {
+        author.Email = (author.Email ?? "").ToLower().Trim();
+
         if (EmailInUse(author.Email ?? ""))
             throw new EmailInUseException();
 
@@ -48,6 +50,8 @@ public class AuthorsService
 
     public void Update(Author author)
     {
+        author.Email = (author.Email ?? "").ToLower().Trim();
+
         Context.Authors.Update(author);
         Context.SaveChanges();
     }
@@ -67,6 +71,7 @@ public class AuthorsService
 
     private bool EmailInUse(string email)
     {
+        email = email.ToLower().Trim();
         return Context.Authors.Any(author => author.Email == email);
     }
 

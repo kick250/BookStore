@@ -1,8 +1,6 @@
 ﻿using Entities;
 using Infrastructure.Exceptions;
-using Newtonsoft.Json.Linq;
 using Repository;
-using System.Runtime.CompilerServices;
 using System.Text;
 
 namespace Services;
@@ -20,6 +18,8 @@ public class UsersService
 
     public void Create(User user)
     {
+        user.Username = (user.Username ?? "").ToLower().Trim();
+
         if (EmailInUse(user.Username ?? ""))
             throw new EmailInUseException();
 
@@ -31,9 +31,14 @@ public class UsersService
 
     public User Login(string username, string password)
     {
+        username = username.ToLower().Trim();
+
         string encodedPassword = EncodePassword(password);
 
-        User? user = Users.FirstOrDefault(user => user.Username == username && user.Password == encodedPassword);
+        User? user = Users.FirstOrDefault(user => 
+            user.Username == username && 
+            user.Password == encodedPassword
+        );
 
         if (user == null)
             throw new LoginUnauthorizedException();
@@ -46,6 +51,7 @@ public class UsersService
 
     private bool EmailInUse(string email)
     {
+        email = email.ToLower().Trim();
         return Context.Users.Any(author => author.Username == email);
     }
 

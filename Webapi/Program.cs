@@ -1,6 +1,9 @@
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using Repository;
 using Services;
+using System.Text;
 
 namespace Webapi;
 
@@ -30,6 +33,22 @@ public class Program
             contextBuilder.UseSqlServer(builder.Configuration.GetConnectionString("BookStoreDb"));
         });
 
+        builder.Services.AddAuthentication(option =>
+        {
+            option.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+            option.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+        }).AddJwtBearer(config =>
+        {
+            var tokenSecret = Encoding.Default.GetBytes(GetTokenSecret(builder.Configuration));
+
+            config.TokenValidationParameters = new TokenValidationParameters()
+            {
+                ValidIssuer = AuthenticationService.ISSUER,
+                IssuerSigningKey = new SymmetricSecurityKey(tokenSecret),
+                ValidateAudience = false
+            };
+        });
+
         var app = builder.Build();
 
         // Configure the HTTP request pipeline.
@@ -41,11 +60,22 @@ public class Program
 
         app.UseHttpsRedirection();
 
+        app.UseAuthentication();
         app.UseAuthorization();
 
 
         app.MapControllers();
 
         app.Run();
+    }
+
+    private static string GetTokenSecret(IConfiguration configuration)
+    {
+        string? value = configuration["TokenSecret"];
+
+        if (value == null)
+            return "";
+
+        return value;
     }
 }

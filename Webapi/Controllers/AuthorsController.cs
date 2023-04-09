@@ -1,5 +1,6 @@
 ﻿using Entities;
 using Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Services;
 
@@ -7,6 +8,7 @@ namespace Webapi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class AuthorsController : ControllerBase
 {
     private AuthorsService AuthorsService { get; set; }

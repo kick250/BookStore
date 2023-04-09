@@ -3,11 +3,13 @@ using Entities;
 using Services;
 using Webapi.Requests;
 using Infrastructure.Exceptions;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Webapi.Controllers;
 
 [Route("api/[controller]")]
 [ApiController]
+[Authorize]
 public class BooksController : ControllerBase
 {
     private BooksService BooksService { get; set; }
