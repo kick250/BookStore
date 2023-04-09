@@ -60,4 +60,12 @@ public class BooksService
         Context.Books.Update(bookToUpdate);
         Context.SaveChanges();
     }
+
+    public void DeleteById(int id)
+    {
+        Book book = GetById(id);
+
+        Context.Books.Remove(book);
+        Context.SaveChanges();
+    }
 }

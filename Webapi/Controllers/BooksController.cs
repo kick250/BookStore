@@ -72,6 +72,8 @@ public class BooksController : ControllerBase
     [HttpDelete("{id}")]
     public IActionResult Delete(int id)
     {
-        throw new NotImplementedException();
+        BooksService.DeleteById(id);
+
+        return NoContent();
     }
 }

@@ -70,4 +70,12 @@ public class BooksAPI : IAPI
         if (!response.IsSuccessStatusCode)
             throw new APIErrorException(response);
     }
+
+    public void DeleteById(int id)
+    {
+        var response = Delete($"/Books/{id}").Result;
+
+        if (!response.IsSuccessStatusCode)
+            throw new APIErrorException(response);
+    }
 }

@@ -80,19 +80,21 @@ public class BooksController : Controller
 
     public ActionResult Delete(int id)
     {
-        return View();
+        Book book = BooksAPI.GetById(id);
+        return View(book);
     }
 
     [HttpPost]
-    public ActionResult Destroy(int id, IFormCollection collection)
+    public ActionResult Destroy(int id)
     {
         try
         {
+            BooksAPI.DeleteById(id);
             return RedirectToAction(nameof(Index));
         }
         catch
         {
-            return View();
+            return RedirectToAction(nameof(Delete), new { id = id });
         }
     }
 
