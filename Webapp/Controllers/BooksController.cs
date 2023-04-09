@@ -29,7 +29,7 @@ public class BooksController : Controller
 
     public ActionResult New()
     {
-        ViewBag.Authors = AuthorsAPI.GetAll();
+        SetAuthors();
         return View();
     }
 
@@ -52,19 +52,29 @@ public class BooksController : Controller
 
     public ActionResult Edit(int id)
     {
-        return View();
+        SetAuthors();
+        Book book = BooksAPI.GetById(id);
+        ViewBag.SelectedAuthorIds = book.GetAuthorsIds();
+        return View(book);
     }
 
     [HttpPost]
-    public ActionResult Edit(int id, IFormCollection collection)
+    public ActionResult Update([FromForm] Book book, List<int> authorIds)
     {
+        if (!ModelState.IsValid) return View(nameof(Edit), book);
+
         try
         {
-            return RedirectToAction(nameof(Index));
+            BooksAPI.Update(book, authorIds);
+
+            return RedirectToAction(nameof(Details), new { id = book.Id });
         }
-        catch
+        catch (Exception ex)
         {
-            return View();
+            ViewBag.Error = ex.Message;
+            SetAuthors();
+            ViewBag.SelectedAuthorIds = authorIds.Select(x => (int?)x).ToList();
+            return View(nameof(Edit), book);
         }
     }
 
@@ -85,4 +95,13 @@ public class BooksController : Controller
             return View();
         }
     }
+
+    #region private
+    
+    private void SetAuthors()
+    {
+        ViewBag.Authors = AuthorsAPI.GetAll();
+    }
+
+    #endregion
 }

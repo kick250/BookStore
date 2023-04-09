@@ -4,7 +4,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Webapi.Requests;
 
-public class CreateBookRequest
+public class BookRequest
 {
     public Book? Book { get; set; }
     [Required(ErrorMessage = "É necessário informar os autores do livro.")]

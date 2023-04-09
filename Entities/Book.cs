@@ -12,4 +12,20 @@ public class Book
     [Required(ErrorMessage = "Um livro precisa de uma data de lançamento")]
     public DateTime? ReleaseDate { get; set; }
     public List<Author>? Authors { get; set; }
+
+    public List<int?> GetAuthorsIds()
+    {
+        if (Authors == null) return new List<int?>();
+
+        return Authors.Select(x => x.Id).ToList();
+    }
+
+    public void UpdateFrom(Book book)
+    {
+        Id = book.Id;
+        Title = book.Title;
+        ISBN = book.ISBN;
+        ReleaseDate = book.ReleaseDate;
+        Authors = book.Authors;
+    }
 }

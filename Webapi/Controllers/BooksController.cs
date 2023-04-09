@@ -40,7 +40,7 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] CreateBookRequest request)
+    public IActionResult Create([FromBody] BookRequest request)
     {
         if (!ModelState.IsValid) return BadRequest(request);
 
@@ -55,9 +55,18 @@ public class BooksController : ControllerBase
     }
 
     [HttpPut("{id}")]
-    public IActionResult Update(int id, [FromBody] string value)
+    public IActionResult Update([FromBody] BookRequest request)
     {
-        throw new NotImplementedException();
+        if (!ModelState.IsValid) return BadRequest(request);
+
+        Book book = request.GetBook();
+
+        List<Author> authors = AuthorsService.GetByIds(request.GetAuthorIds());
+        book.Authors = authors;
+
+        BooksService.Update(book);
+
+        return Ok(book);
     }
 
     [HttpDelete("{id}")]

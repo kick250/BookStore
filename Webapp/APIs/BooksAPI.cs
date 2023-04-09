@@ -56,4 +56,18 @@ public class BooksAPI : IAPI
         if (!response.IsSuccessStatusCode)
             throw new APIErrorException(response);
     }
+
+    public void Update(Book book, List<int> authorIds)
+    {
+        var bookParams = new
+        {
+            Book = book,
+            AuthorIds = authorIds
+        };
+
+        var response = Put($"/Books/{book.Id}", bookParams).Result;
+
+        if (!response.IsSuccessStatusCode)
+            throw new APIErrorException(response);
+    }
 }
