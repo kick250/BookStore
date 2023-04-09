@@ -26,4 +26,13 @@ public class Author
 
         return Books.Count > 0;
     }
+
+    public string GetFormattedBirthdate()
+    {
+        if (Birthdate == null) return "";
+
+        DateTime releaseDate = (DateTime)Birthdate;
+
+        return releaseDate.ToString("dd/MM/yyyy");
+    }
 }

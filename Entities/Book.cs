@@ -28,4 +28,13 @@ public class Book
         ReleaseDate = book.ReleaseDate;
         Authors = book.Authors;
     }
+
+    public string GetFormattedReleaseDate()
+    {
+        if (ReleaseDate == null) return "";
+
+        DateTime releaseDate = (DateTime) ReleaseDate;
+
+        return releaseDate.ToString("dd/MM/yyyy");
+    }
 }
