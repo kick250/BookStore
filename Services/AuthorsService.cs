@@ -32,6 +32,11 @@ public class AuthorsService
         return author;
     }
 
+    public List<Author> GetByIds(List<int?> ids)
+    {
+        return Authors.Where(author => ids.Contains(author.Id)).ToList();
+    }
+
     public void Create(Author author)
     {
         if (EmailInUse(author.Email ?? ""))

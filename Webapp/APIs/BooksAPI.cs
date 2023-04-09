@@ -9,7 +9,6 @@ public class BooksAPI : IAPI
     public BooksAPI(IConfiguration configuration)
         : base(configuration["WebapiHost"]) { }
 
-
     public List<Book> GetAll()
     {
         var response = Get("/Books").Result;
@@ -25,5 +24,19 @@ public class BooksAPI : IAPI
             throw new Exception("Ocorreu um erro desconhecido.");
 
         return result;
+    }
+
+    public void Create(Book book, List<int> authorIds)
+    {
+        var bookParams = new
+        {
+            Book = book,
+            AuthorIds = authorIds
+        };
+
+        var response = Post("/Books", bookParams).Result;
+
+        if (!response.IsSuccessStatusCode)
+            throw new APIErrorException(response);
     }
 }

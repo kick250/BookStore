@@ -15,6 +15,11 @@ public class Author
     public DateTime? Birthdate { get; set; }
     public List<Book>? Books { get; set; }
 
+    public string GetFullName()
+    {
+        return $"{Name} {LastName}";
+    }
+
     public bool HasSomeBook()
     {
         if (Books == null) return false;

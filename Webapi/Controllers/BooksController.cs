@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Entities;
 using Services;
+using Webapi.Requests;
 
 namespace Webapi.Controllers;
 
@@ -9,10 +10,12 @@ namespace Webapi.Controllers;
 public class BooksController : ControllerBase
 {
     private BooksService BooksService { get; set; }
+    private AuthorsService AuthorsService { get; set; }
 
-    public BooksController(BooksService booksService)
+    public BooksController(BooksService booksService, AuthorsService authorsService)
     {
         BooksService = booksService;
+        AuthorsService = authorsService;
     }
 
     [HttpGet]
@@ -29,9 +32,18 @@ public class BooksController : ControllerBase
     }
 
     [HttpPost]
-    public IActionResult Create([FromBody] string value)
+    public IActionResult Create([FromBody] CreateBookRequest request)
     {
-        throw new NotImplementedException();
+        if (!ModelState.IsValid) return BadRequest(request);
+
+        Book book = request.GetBook();
+
+        List<Author> authors = AuthorsService.GetByIds(request.GetAuthorIds());
+        book.Authors = authors;
+
+        BooksService.Create(book);
+
+        return Created("", book);
     }
 
     [HttpPut("{id}")]

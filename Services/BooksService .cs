@@ -20,4 +20,10 @@ public class BooksService
     {
         return Books;
     }
+
+    public void Create(Book book)
+    {
+        Context.Books.Add(book);
+        Context.SaveChanges();
+    }
 }

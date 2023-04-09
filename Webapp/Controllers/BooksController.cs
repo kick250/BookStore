@@ -7,10 +7,12 @@ namespace Webapp.Controllers;
 public class BooksController : Controller
 {
     private BooksAPI BooksAPI { get; set; }
+    private AuthorsAPI AuthorsAPI { get; set; }
 
-    public BooksController(BooksAPI booksAPI)
+    public BooksController(BooksAPI booksAPI, AuthorsAPI authorsAPI)
     {
         BooksAPI = booksAPI;
+        AuthorsAPI = authorsAPI;
     }
 
     public ActionResult Index()
@@ -26,19 +28,24 @@ public class BooksController : Controller
 
     public ActionResult New()
     {
+        ViewBag.Authors = AuthorsAPI.GetAll();
         return View();
     }
 
     [HttpPost]
-    public ActionResult Create(IFormCollection collection)
+    public ActionResult Create([FromForm] Book book, List<int> authorIds)
     {
+        if (!ModelState.IsValid) return View(nameof(New), book);
+
         try
         {
+            BooksAPI.Create(book, authorIds);
             return RedirectToAction(nameof(Index));
         }
-        catch
+        catch (Exception ex)
         {
-            return View();
+            ViewBag.Error = ex.Message;
+            return View(nameof(New), book);
         }
     }
 
