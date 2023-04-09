@@ -13,9 +13,4 @@ public class User
     public string? Username { get; set; }
     [Required(ErrorMessage = "É necessário uma senha para o usuário")]
     public string? Password { get; set; }
-
-    public void EncodePassword()
-    {
-        Password = Convert.ToBase64String(Encoding.Default.GetBytes(Password ?? ""));
-    }
 }

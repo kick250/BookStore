@@ -14,6 +14,7 @@ public class Program
         builder.Services.AddScoped<UsersService>();
         builder.Services.AddScoped<AuthorsService>();
         builder.Services.AddScoped<BooksService>();
+        builder.Services.AddScoped<AuthenticationService>();
 
         builder.Services.AddControllers()
             .AddNewtonsoftJson(config =>
