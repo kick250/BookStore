@@ -23,7 +23,8 @@ public class BooksController : Controller
 
     public ActionResult Details(int id)
     {
-        return View();
+        Book book = BooksAPI.GetById(id);
+        return View(book);
     }
 
     public ActionResult New()

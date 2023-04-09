@@ -2,6 +2,7 @@
 using Entities;
 using Services;
 using Webapi.Requests;
+using Infrastructure.Exceptions;
 
 namespace Webapi.Controllers;
 
@@ -28,7 +29,14 @@ public class BooksController : ControllerBase
     [HttpGet("{id}")]
     public IActionResult Show(int id)
     {
-        throw new NotImplementedException();
+        try
+        {
+            Book book = BooksService.GetById(id);
+            return Ok(book);
+        } catch(RecordNotFound ex)
+        {
+            return NotFound(new { ex.Message });
+        }
     }
 
     [HttpPost]

@@ -26,6 +26,23 @@ public class BooksAPI : IAPI
         return result;
     }
 
+    public Book GetById(int id)
+    {
+        var response = Get($"/Books/{id}").Result;
+
+        if (!response.IsSuccessStatusCode)
+            throw new APIErrorException(response);
+
+        string jsonResult = response.Content.ReadAsStringAsync().Result;
+
+        Book? result = JsonConvert.DeserializeObject<Book>(jsonResult);
+
+        if (result == null)
+            throw new Exception("Ocorreu um erro desconhecido.");
+
+        return result;
+    }
+
     public void Create(Book book, List<int> authorIds)
     {
         var bookParams = new
