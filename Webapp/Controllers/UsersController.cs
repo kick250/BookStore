@@ -75,4 +75,11 @@ public class UsersController : Controller
         }
 
     }
+
+    public ActionResult Logout()
+    {
+        AccountManager.Logout();
+
+        return Redirect(nameof(Login));
+    }
 }
