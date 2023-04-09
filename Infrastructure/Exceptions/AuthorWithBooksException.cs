@@ -2,5 +2,5 @@
 
 public class AuthorWithBooksException : Exception
 {
-    public override string Message => "Impossível apagar um author que possui livros cadastrados.";
+    public override string Message => "Impossível apagar um autor que possui livros cadastrados.";
 }

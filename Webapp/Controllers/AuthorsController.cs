@@ -93,7 +93,7 @@ public class AuthorsController : Controller
         catch (Exception ex)
         {
             ViewBag.Error = ex.Message;
-            return RedirectToAction(nameof(Delete));
+            return View(nameof(Delete), AuthorsAPI.GetById(id));
         }
     }
 }
